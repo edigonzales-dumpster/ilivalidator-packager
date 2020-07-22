@@ -1,0 +1,35 @@
+name: ili2c
+on:
+  push:
+    # tags:
+    #   - "v*"
+    branches:
+      - 'master'
+
+jobs:
+
+  build-non-windows-image:
+    name: 'Build Non-Windows Image'
+    needs: [build-jar-job]
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        include:
+          - os: 'ubuntu-latest'
+            label: 'linux'
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Setup Java 14'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+      - name: 'Download zipped ilivalidator release.'
+        run: |
+          ./gradlew downloadZip unzipFile
+      - name: 'Get Version Number'
+        run: |
+          echo "::set-env name=VERSION::$(./gradlew properties -Drelease -q | grep "version:" | awk '{print $2}')"
