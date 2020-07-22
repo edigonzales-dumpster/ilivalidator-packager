@@ -9,9 +9,11 @@ repositories {
     jcenter()
 }
 
-def pathToTempFolder = System.getProperty("java.io.tmpdir")
-def pathToUnzipFolder = Paths.get(pathToTempFolder, "unzip_data")
- 
+//def pathToTempFolder = System.getProperty("java.io.tmpdir")
+def pathToTempFolder = "."
+//def pathToUnzipFolder = Paths.get(pathToTempFolder, "unzip_data")
+def pathToUnzipFolder = "."
+
 version "1.11.6"
 def bindistName = "ilivalidator-"+version
 
@@ -30,16 +32,22 @@ task unzipFile(type: Copy, dependsOn: 'downloadZip') {
     } 
 }
 
+/*
+task jdeps(type: Exec) {
+    workingDir pathToUnzipFolder 
+    commandLine osAdaptiveCommand("jdeps", "--class-path", pathToUnzipFolder.toString() + File.separatorChar + "libs/*", "--multi-release", "base", "-recursive", "--ignore-missing-deps", "--print-module-deps", pathToUnzipFolder.toString() + File.separatorChar + bindistName + ".jar")
+}
 
 task jlink(type: Exec) {
     workingDir pathToUnzipFolder 
-    commandLine osAdaptiveCommand("jlink", "--add-modules", "java.base,java.desktop,java.management,java.sql", "--output", "ilivalidator-jre")   
+    commandLine osAdaptiveCommand("jlink", "--add-modules", "\$(jdeps", "--class-path", pathToUnzipFolder.toString() + File.separatorChar + "libs/*", "--multi-release", "base", "-recursive", "--ignore-missing-deps", "--print-module-deps", pathToUnzipFolder.toString() + File.separatorChar + bindistName + ".jar)",   "--output", "ilivalidator-jre")   
 }
 
 task copyMainJar(type: Copy) {
-    from pathToUnzipFolder
-    into pathToUnzipFolder + "/"
-
+    from(pathToUnzipFolder) {
+        include '*.jar'
+    }
+    into pathToUnzipFolder.toString() + File.separatorChar + "libs"
 }
 
 task jpackage (type: Exec) {
@@ -55,7 +63,7 @@ private static Iterable<String> osAdaptiveCommand(String... commands) {
     newCommands.addAll(commands)
     return newCommands
 }
-
+*/
 /*
 dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
