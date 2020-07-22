@@ -31,10 +31,13 @@ jobs:
           java-version: 14
       - name: 'Download zipped ilivalidator release.'
         run: |
-          ./gradlew  unzipFile
+          ./gradlew unzipFile
       - name: 'Get Version Number'
         run: |
           echo "::set-env name=VERSION::$(./gradlew properties -Drelease -q | grep "version:" | awk '{print $2}')"
-      - name: 'Get dependencies'
+      - name: 'Get dependencies (jdeps)'
         run: |
           echo "::set-env name=DEPS::$(jdeps --class-path 'libs/*' --multi-release base -recursive --ignore-missing-deps --print-module-deps ilivalidator-1.11.6.jar)"
+      - name: 'Create JRE (jlink)'
+        run: |
+          jlink --add-modules java.base,java.desktop,java.management,java.sql --output ilivalidator-jre
