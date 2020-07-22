@@ -49,5 +49,5 @@ jobs:
       - name: 'Create package'
         run: |
           jpackage --name ilivalidator --type deb --input libs --main-jar ilivalidator-1.11.6.jar -d output --runtime-image ilivalidator-jre --app-version 1.11.6
-      - name: List all files in project directory
-        run: ls -la  
+      - name: List all files in output directory
+        run: ls -la output
