@@ -5,7 +5,8 @@ on:
     #   - "v*"
     branches:
       - 'master'
-
+env:
+  VERSION2: 1.11.6
 jobs:
 
   build-non-windows-image:
@@ -28,7 +29,7 @@ jobs:
         uses: actions/checkout@v2
       - name: 'Download ....'
         run: |
-          curl -L https://github.com/claeis/ilivalidator/releases/download/ilivalidator-1.11.6/ilivalidator-1.11.6.zip -o fubar.zip
+          curl -L https://github.com/claeis/ilivalidator/releases/download/ilivalidator-${{env.VERSION2}}/ilivalidator-${{env.VERSION2}}.zip -o fubar.zip
       - name: 'Unzip ....'
         run: |
           unzip fubar.zip -d fubar
