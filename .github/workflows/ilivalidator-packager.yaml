@@ -41,3 +41,6 @@ jobs:
       - name: 'Create JRE (jlink)'
         run: |
           jlink --add-modules ${{env.DEPS}} --output ilivalidator-jre
+      - name: 'Copy main jar to libs'
+        run: |
+          cp  ilivalidator-${{env.VERSION}}.jar libs/
