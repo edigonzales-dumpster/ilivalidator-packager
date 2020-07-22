@@ -44,3 +44,10 @@ jobs:
       - name: 'Copy main jar to libs'
         run: |
           cp  ilivalidator-${{env.VERSION}}.jar libs/
+      - name: List all files in libs directory
+        run: ls -la libs 
+      - name: 'Create package'
+        run: |
+          jpackage --name ilivalidator --type deb --input libs --main-jar ilivalidator-1.11.6.jar -d output --runtime-image ilivalidator-jre --app-version 1.11.6
+      - name: List all files in project directory
+        run: ls -la  
