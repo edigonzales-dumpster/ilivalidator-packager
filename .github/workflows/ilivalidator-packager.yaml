@@ -10,16 +10,20 @@ jobs:
 
   build-non-windows-image:
     name: 'Build Non-Windows Image'
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
 
-    # needs: [build-jar-job]
-    # strategy:
-    #   matrix:
-    #     os: ['ubuntu-latest']
-    #     include:
-    #       - os: 'ubuntu-latest'
-    #         label: 'linux'
-    # runs-on: ${{matrix.os}}
+    needs: [build-jar-job]
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest']
+        include:
+          - os: 'ubuntu-latest'
+            label: 'linux'
+            package: 'deb'
+          - os: 'macos-latest'
+            label: 'mac'
+            package: 'dmg'
+    runs-on: ${{matrix.os}}
 
     steps:
       - name: 'Checkout'
@@ -48,6 +52,6 @@ jobs:
         run: ls -la libs 
       - name: 'Create package'
         run: |
-          jpackage --name ilivalidator --type deb --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
+          jpackage --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
       - name: List all files in output directory
         run: ls -la output
