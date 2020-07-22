@@ -37,7 +37,7 @@ jobs:
           echo "::set-env name=VERSION::$(./gradlew properties -Drelease -q | grep "version:" | awk '{print $2}')"
       - name: 'Get dependencies (jdeps)'
         run: |
-          echo "::set-env name=DEPS::$(jdeps --class-path 'libs/*' --multi-release base -recursive --ignore-missing-deps --print-module-deps ilivalidator-1.11.6.jar)"
+          echo "::set-env name=DEPS::$(jdeps --class-path 'libs/*' --multi-release base -recursive --ignore-missing-deps --print-module-deps ilivalidator-${{env.VERSION}}.jar)"
       - name: 'Create JRE (jlink)'
         run: |
           jlink --add-modules ${{env.DEPS}} --output ilivalidator-jre
@@ -48,6 +48,6 @@ jobs:
         run: ls -la libs 
       - name: 'Create package'
         run: |
-          jpackage --name ilivalidator --type deb --input libs --main-jar ilivalidator-1.11.6.jar -d output --runtime-image ilivalidator-jre --app-version 1.11.6
+          jpackage --name ilivalidator --type deb --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
       - name: List all files in output directory
         run: ls -la output
