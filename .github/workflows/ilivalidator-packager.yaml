@@ -29,9 +29,6 @@ jobs:
       - name: 'Download ....'
         run: |
           curl https://github.com/claeis/ilivalidator/releases/download/ilivalidator-1.11.6/ilivalidator-1.11.6.zip -o fubar.zip
-      - name: 'Unzip ....'
-        run: |
-          unzip fubar.zip 
       - name: List all files in fubar directory
         run: ls -la  
       - name: 'Setup Java 14'
