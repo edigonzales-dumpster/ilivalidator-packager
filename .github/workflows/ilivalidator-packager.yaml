@@ -31,9 +31,9 @@ jobs:
           curl https://github.com/claeis/ilivalidator/releases/download/ilivalidator-1.11.6/ilivalidator-1.11.6.zip -o fubar.zip
       - name: 'Unzip ....'
         run: |
-          unzip fubar.zip -d fubar
+          unzip fubar.zip 
       - name: List all files in fubar directory
-        run: ls -la fubar 
+        run: ls -la  
       - name: 'Setup Java 14'
         uses: actions/setup-java@v1
         with:
@@ -52,7 +52,7 @@ jobs:
           jlink --add-modules ${{env.DEPS}} --output ilivalidator-jre
       - name: 'Copy main jar to libs'
         run: |
-          cp  ilivalidator-${{env.VERSION}}.jar libs/
+          cp ilivalidator-${{env.VERSION}}.jar libs/
       - name: List all files in libs directory
         run: ls -la libs 
       - name: 'Create package'
