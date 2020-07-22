@@ -23,7 +23,7 @@ task downloadZip(type: Download) {
 
 task unzipFile(type: Copy, dependsOn: 'downloadZip') {
     description = "Unzip downloaded ilivalidator release."
-    from zipTree(bindistName+'.zip')
+    from zipTree(pathToTempFolder + File.separatorChar + bindistName+'.zip')
     into pathToUnzipFolder
     doLast {
         println "Unzipped to: " + pathToUnzipFolder

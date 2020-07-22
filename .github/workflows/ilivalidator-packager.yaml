@@ -10,14 +10,16 @@ jobs:
 
   build-non-windows-image:
     name: 'Build Non-Windows Image'
+    runs-on: ubuntu-latest
+
     # needs: [build-jar-job]
-    strategy:
-      matrix:
-        os: ['ubuntu-latest']
-        include:
-          - os: 'ubuntu-latest'
-            label: 'linux'
-    runs-on: ${{matrix.os}}
+    # strategy:
+    #   matrix:
+    #     os: ['ubuntu-latest']
+    #     include:
+    #       - os: 'ubuntu-latest'
+    #         label: 'linux'
+    # runs-on: ${{matrix.os}}
 
     steps:
       - name: 'Checkout'
