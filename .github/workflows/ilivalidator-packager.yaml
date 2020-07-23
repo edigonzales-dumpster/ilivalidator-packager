@@ -11,19 +11,21 @@ jobs:
   create-release:
     name: 'Create Release'
     runs-on: ubuntu-20.04
-    - name: 'Create Release'
-      # if: contains(github.ref, 'v')
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      with:
-        tag_name: ${{github.ref}}
-        release_name: Release ${{github.ref}}
-        body: |
-          Initial release
-        draft: false
-        prerelease: false
+
+    steps:
+      - name: 'Create Release'
+        # if: contains(github.ref, 'v')
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          tag_name: ${{github.sha}}
+          release_name: Release ${{github.sha}}
+          body: |
+            Initial release
+          draft: false
+          prerelease: false
 
   build-non-windows-image:
     name: 'Build Non-Windows Image'
