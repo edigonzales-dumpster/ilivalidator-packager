@@ -8,9 +8,27 @@ on:
 env:
   VERSION: 1.11.6
 jobs:
+  create-release:
+    name: 'Create Release'
+    runs-on: ubuntu-20.04
+    - name: 'Create Release'
+      # if: contains(github.ref, 'v')
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        tag_name: ${{github.ref}}
+        release_name: Release ${{github.ref}}
+        body: |
+          Initial release
+        draft: false
+        prerelease: false
+
 
   build-non-windows-image:
     name: 'Build Non-Windows Image'
+    needs: [create-release]
     strategy:
       matrix:
         os: ['ubuntu-20.04', 'macos-latest']
@@ -18,11 +36,13 @@ jobs:
           - os: 'ubuntu-20.04'
             label: 'linux'
             package: 'deb'
+            icon: 'icon.png'
             asset_prefix: 'ilivalidator_'
             asset_suffix: '-1_amd64'
           - os: 'macos-latest'
             label: 'mac'
             package: 'dmg'
+            icon: 'icon.icns'
             asset_prefix: 'ilivalidator-'
             asset_suffix: ''
     runs-on: ${{matrix.os}}
@@ -53,22 +73,9 @@ jobs:
         run: ls -la libs 
       - name: 'Create package (jpackage)'
         run: |
-          jpackage --icon icon.icns --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
+          jpackage --icon ${{matrix.icon}} --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
       - name: List all files in output directory
         run: ls -la output
-      - name: 'Create Release'
-        # if: contains(github.ref, 'v')
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        with:
-          tag_name: ${{github.ref}}
-          release_name: Release ${{github.ref}}
-          body: |
-            Initial release
-          draft: false
-          prerelease: false
       - name: 'Upload Release Asset'
         # if: contains(github.ref, 'v')
         id: upload-release-asset
