@@ -26,7 +26,17 @@ jobs:
             Initial release
           draft: false
           prerelease: false
-
+      - name: 'Write Upload URL To File'
+        # if: contains(github.ref, 'v')
+        run: |
+          echo "${{steps.create_release.outputs.upload_url}}" > upload_url.txt
+      - name: 'Publish Upload URL'
+        # if: contains(github.ref, 'v')
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: 'upload_url.txt'
+          path: 'upload_url.txt'
+  
   build-non-windows-image:
     name: 'Build Non-Windows Image'
     needs: [create-release]
@@ -70,13 +80,20 @@ jobs:
       - name: 'Copy main jar to libs'
         run: |
           cp ilivalidator-${{env.VERSION}}.jar libs/
-      - name: List all files in libs directory
-        run: ls -la libs 
       - name: 'Create package (jpackage)'
         run: |
           jpackage --icon ${{matrix.icon}} --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
       - name: List all files in output directory
         run: ls -la output
+      - name: 'Get Release URL'
+        if: contains(github.ref, 'v')
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: 'upload_url.txt'
+      - name: 'Get Upload URL'
+        if: contains(github.ref, 'v')
+        run: |
+          echo "::set-env name=UPLOAD_URL::$(cat upload_url.txt)"
       - name: 'Upload Release Asset'
         # if: contains(github.ref, 'v')
         id: upload-release-asset
@@ -84,7 +101,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
+          upload_url: ${{env.UPLOAD_URL}}
           asset_path: output/${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
           asset_name: ${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
           asset_content_type: application/octet-stream
