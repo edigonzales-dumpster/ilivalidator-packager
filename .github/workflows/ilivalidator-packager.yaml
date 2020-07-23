@@ -25,7 +25,6 @@ jobs:
         draft: false
         prerelease: false
 
-
   build-non-windows-image:
     name: 'Build Non-Windows Image'
     needs: [create-release]
