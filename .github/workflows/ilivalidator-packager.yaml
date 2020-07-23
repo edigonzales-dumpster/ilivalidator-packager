@@ -18,9 +18,13 @@ jobs:
           - os: 'ubuntu-20.04'
             label: 'linux'
             package: 'deb'
+            asset_prefix: 'ilivalidator_'
+            asset_suffix: '-1_amd64'
           - os: 'macos-latest'
             label: 'mac'
             package: 'dmg'
+            asset_prefix: 'ilivalidator-'
+            asset_suffix: ''
     runs-on: ${{matrix.os}}
 
     steps:
@@ -36,12 +40,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 14
-      # - name: 'Download zipped ilivalidator release.'
-      #   run: |
-      #     ./gradlew unzipFile
-      # - name: 'Get Version Number'
-      #   run: |
-      #     echo "::set-env name=VERSION::$(./gradlew properties -Drelease -q | grep "version:" | awk '{print $2}')"
       - name: 'Get dependencies (jdeps)'
         run: |
           echo "::set-env name=DEPS::$(jdeps --class-path 'libs/*' --multi-release base -recursive --ignore-missing-deps --print-module-deps ilivalidator-${{env.VERSION}}.jar)"
@@ -53,8 +51,33 @@ jobs:
           cp ilivalidator-${{env.VERSION}}.jar libs/
       - name: List all files in libs directory
         run: ls -la libs 
-      - name: 'Create package'
+      - name: 'Create package (jpackage)'
         run: |
-          jpackage --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
+          jpackage --icon icon.icns --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
       - name: List all files in output directory
         run: ls -la output
+      - name: 'Create Release'
+        # if: contains(github.ref, 'v')
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          tag_name: ${{github.ref}}
+          release_name: Release ${{github.ref}}
+          body: |
+            Initial release
+          draft: false
+          prerelease: false
+      - name: 'Upload Release Asset'
+          # if: contains(github.ref, 'v')
+          id: upload-release-asset
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          with:
+            upload_url: ${{steps.create_release.outputs.upload_url}}
+            asset_path: output/${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
+            asset_name: ${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
+            asset_content_type: application/octet-stream
+  
