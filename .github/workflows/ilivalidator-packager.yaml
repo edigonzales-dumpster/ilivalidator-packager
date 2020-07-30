@@ -79,10 +79,10 @@ jobs:
           jlink --add-modules ${{env.DEPS}} --output ilivalidator-jre
       - name: 'Copy main jar to libs'
         run: |
-          cp ilivalidator-${{env.VERSION}}.jar libs/ilivalidator.jar
+          cp ilivalidator-${{env.VERSION}}.jar libs/
       - name: 'Create package (jpackage)'
         run: |
-          jpackage --icon ${{matrix.icon}} --name ilivalidator-${{env.VERSION}} --type ${{matrix.package}} --input libs --main-jar ilivalidator.jar -d output --runtime-image ilivalidator-jre 
+          jpackage --icon ${{matrix.icon}} --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
       - name: List all files in output directory
         run: ls -la output
       - name: 'Get Release URL'
@@ -94,17 +94,17 @@ jobs:
         # if: contains(github.ref, 'v')
         run: |
           echo "::set-env name=UPLOAD_URL::$(cat upload_url.txt)"
-      # - name: 'Upload Release Asset'
-      #   # if: contains(github.ref, 'v')
-      #   id: upload-release-asset
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      #   with:
-      #     upload_url: ${{env.UPLOAD_URL}}
-      #     asset_path: output/${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
-      #     asset_name: ${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
-      #     asset_content_type: application/octet-stream
+      - name: 'Upload Release Asset'
+        # if: contains(github.ref, 'v')
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{env.UPLOAD_URL}}
+          asset_path: output/${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
+          asset_name: ${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
+          asset_content_type: application/octet-stream
   
   build-windows-image:
     name: 'Build Windows Image'
