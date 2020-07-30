@@ -82,7 +82,7 @@ jobs:
           cp ilivalidator-${{env.VERSION}}.jar libs/
       - name: 'Create package (jpackage)'
         run: |
-          jpackage --icon ${{matrix.icon}} --name ilivalidator --app-version ${{env.VERSION}}  --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
+          jpackage --icon ${{matrix.icon}} --name ilivalidator-${{env.VERSION}} --app-version ${{env.VERSION}}  --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}}
       - name: List all files in output directory
         run: ls -la output
       - name: 'Get Release URL'
