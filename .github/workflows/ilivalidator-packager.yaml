@@ -1,4 +1,4 @@
-name: ili2c
+name: ilivalidator
 on:
   push:
     # tags:
