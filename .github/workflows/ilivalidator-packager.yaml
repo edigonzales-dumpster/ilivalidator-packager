@@ -32,6 +32,12 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
       - name: 'Download zipped ilivalidator release'
         run: |
           curl -L https://downloads.interlis.ch/ilivalidator/ilivalidator-${{env.VERSION}}.zip -o ilivalidator.zip
