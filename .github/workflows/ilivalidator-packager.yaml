@@ -56,6 +56,7 @@ jobs:
           jpackage --icon ${{matrix.icon}} --name ilivalidator --type ${{matrix.package}} --input libs --main-jar ilivalidator-${{env.VERSION}}.jar -d output --runtime-image ilivalidator-jre --app-version ${{env.VERSION}} --java-options -Xmx2g 
       - name: List all files in output directory
         run: ls -la output
+        shell: bash
       - name: 'Upload to S3'
         uses: shallwefootball/s3-upload-action@master
         with:
