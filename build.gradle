@@ -3,12 +3,15 @@ buildscript {
         maven { url "http://jars.interlis.ch" }
         maven { url "http://jars.umleditor.org" }
         maven { url "https://repo.osgeo.org/repository/release/" }
-        maven { url "https://plugins.gradle.org/m2/" }
+        //maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
         mavenCentral()
     }
+    /*
     dependencies {
         classpath group: 'ch.so.agi', name: 'gretl',  version: '2.1.+'
     }
+    */
 }
 
 plugins {
