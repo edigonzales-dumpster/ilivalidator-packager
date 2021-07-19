@@ -65,7 +65,7 @@ jobs:
       - name: List all files in output directory
         run: ls -la output
         shell: bash
-      - name: List all files in output directory
+      - name: List all files in project root directory
         run: ls -la 
         shell: bash
       # - name: 'Upload to S3'
