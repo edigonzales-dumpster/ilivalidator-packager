@@ -11,9 +11,9 @@ on:
 env:
   VERSION: 1.11.10
 jobs:
-  create-release:
-    name: 'Create Release'
-    runs-on: ubuntu-20.04
+  # create-release:
+  #   name: 'Create Release'
+  #   runs-on: ubuntu-20.04
 
     # steps:
     #   - name: 'Create Release'
