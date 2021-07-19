@@ -6,8 +6,8 @@ import com.fuseanalytics.gradle.s3.*
 
 task upload(type: S3Upload) {
     bucket = "ch.so.agi.ilitools"
-    key = "ilivalidator/ilivalidator-1.11.10.msi"
-    file = "output/ilivalidator-1.11.10.msi"
+    key = "ilivalidator/" + System.getenv("FILENAME")
+    file = "output/" + System.getenv("FILENAME")
     overwrite = true
     doLast {
         println "fubar"

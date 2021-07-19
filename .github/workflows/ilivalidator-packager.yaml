@@ -81,6 +81,7 @@ jobs:
         run: |
           gradle upload
         env:
+          FILENAME: ilivalidator-${{env.VERSION}}.${{matrix.package}}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "eu-central-1"
