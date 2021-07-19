@@ -12,7 +12,8 @@ jobs:
     #name: 'Build Non-Windows Image'
     strategy:
       matrix:
-        os: ['ubuntu-20.04', 'macos-latest', 'windows-latest']
+        #os: ['ubuntu-20.04', 'macos-latest', 'windows-latest']
+        os: ['windows-latest']
         include:
           - os: 'ubuntu-20.04'
             label: 'linux'
@@ -59,11 +60,12 @@ jobs:
         shell: bash
       - name: 'Upload to S3'
         uses: shallwefootball/s3-upload-action@master
+        shell: bash
         with:
           aws_key_id: ${{ secrets.AWS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: 'output/'
+          source_dir: 'output'
           destination_dir: 'ilivalidator'
 
   # build-windows-image:
