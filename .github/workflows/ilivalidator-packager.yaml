@@ -19,14 +19,20 @@ jobs:
             label: 'linux'
             package: 'deb'
             icon: 'icon-ilivalidator-128x128.png'
+            asset_prefix: 'ilivalidator_'
+            asset_suffix: '-1_amd64'
           - os: 'macos-latest'
             label: 'mac'
             package: 'dmg'
             icon: 'icon-ilivalidator-128x128.icns'
+            asset_prefix: 'ilivalidator-'
+            asset_suffix: ''
           - os: 'windows-latest'
             label: 'win'
             package: 'msi'
             icon: 'icon-ilivalidator-128x128.ico'
+            asset_prefix: 'ilivalidator-'
+            asset_suffix: ''
     runs-on: ${{matrix.os}}
 
     steps:
@@ -77,7 +83,7 @@ jobs:
         run: |
           ./gradlew uploadFile 
         env:
-          FILENAME: ilivalidator-${{env.VERSION}}.${{matrix.package}}
+          FILENAME: ${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "eu-central-1"
