@@ -8,8 +8,8 @@ env:
   VERSION: 1.11.10
 
 jobs:  
-  build-non-windows-image:
-    name: 'Build Non-Windows Image'
+  build:
+    #name: 'Build Non-Windows Image'
     strategy:
       matrix:
         os: ['ubuntu-20.04', 'macos-latest']
@@ -18,14 +18,14 @@ jobs:
             label: 'linux'
             package: 'deb'
             icon: 'icon-ilivalidator-128x128.png'
-            asset_prefix: 'ilivalidator_'
-            asset_suffix: '-1_amd64'
           - os: 'macos-latest'
             label: 'mac'
             package: 'dmg'
             icon: 'icon-ilivalidator-128x128.icns'
-            asset_prefix: 'ilivalidator-'
-            asset_suffix: ''
+          - os: 'windows-latest'
+            label: 'win'
+            package: 'msi'
+            icon: 'icon-ilivalidator-128x128.ico'
     runs-on: ${{matrix.os}}
 
     steps:
