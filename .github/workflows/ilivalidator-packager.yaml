@@ -28,6 +28,7 @@ jobs:
             Initial release
           draft: false
           prerelease: false
+          allowUpdates: true
       - name: 'Write Upload URL To File'
         # if: contains(github.ref, 'v')
         run: |
