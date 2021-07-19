@@ -79,7 +79,7 @@ jobs:
       - name: Upload file to bucket
         shell: bash
         run: |
-          gradle upload
+          gradle uploadFile
         env:
           FILENAME: ilivalidator-${{env.VERSION}}.${{matrix.package}}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
