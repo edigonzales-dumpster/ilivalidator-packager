@@ -1,7 +1,7 @@
 # ilivalidator-packager
 
 ## Todo
-- Wohin werden die Packages hochgeladen? 
+- Dateiablage? HTTP? FTP? S3?
 
 ## Building
 
