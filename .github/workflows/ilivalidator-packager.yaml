@@ -3,8 +3,11 @@ on:
   push:
     # tags:
     #   - "v*"
-    branches:
-      - 'master'
+    #branches:
+    #  - 'master'
+    tags:
+      - '*'
+
 env:
   VERSION: 1.11.10
 jobs:
