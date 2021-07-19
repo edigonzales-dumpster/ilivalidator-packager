@@ -1,23 +1,26 @@
 buildscript {
     repositories {
-        maven { url "http://jars.interlis.ch" }
-        maven { url "http://jars.umleditor.org" }
+        maven { url "http://jars.interlis.ch"; allowInsecureProtocol true }
         maven { url "https://repo.osgeo.org/repository/release/" }
-        //maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://plugins.gradle.org/m2/" }
         gradlePluginPortal()
         mavenCentral()
     }
-    /*
+    
     dependencies {
         classpath group: 'ch.so.agi', name: 'gretl',  version: '2.1.+'
     }
-    */
+    
 }
 
-plugins {
+/*lugins {
   //id 'com.fuseanalytics.gradle.s3' version '1.1.3'
   id "ch.so.agi.gretl" version "2.1.138"
 }
+*/
+
+apply plugin: "ch.so.agi.gretl"
+
 
 /*
 import com.fuseanalytics.gradle.s3.*
