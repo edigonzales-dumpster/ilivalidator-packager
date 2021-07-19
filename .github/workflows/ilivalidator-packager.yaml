@@ -47,7 +47,7 @@ jobs:
   
   build-non-windows-image:
     name: 'Build Non-Windows Image'
-    needs: [create-release]
+    #needs: [create-release]
     strategy:
       matrix:
         os: ['ubuntu-20.04', 'macos-latest']
