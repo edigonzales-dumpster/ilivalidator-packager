@@ -1,19 +1,15 @@
 name: ilivalidator
 on:
   push:
-    # tags:
-    #   - "v*"
     branches:
      - 'master'
-    # tags:
-    #   - '*'
 
 env:
   VERSION: 1.11.10
+
 jobs:  
   build-non-windows-image:
     name: 'Build Non-Windows Image'
-    #needs: [create-release]
     strategy:
       matrix:
         os: ['ubuntu-20.04', 'macos-latest']
@@ -48,6 +44,7 @@ jobs:
       - name: 'Get dependencies (jdeps)'
         run: |
           echo "DEPS=$(jdeps --class-path 'libs/*' --multi-release base -recursive --ignore-missing-deps --print-module-deps ilivalidator-${{env.VERSION}}.jar)" >> $GITHUB_ENV
+        shell: bash
       - name: 'Create JRE (jlink)'
         run: |
           jlink --add-modules ${{env.DEPS}} --output ilivalidator-jre
@@ -68,28 +65,6 @@ jobs:
           source_dir: 'output/'
           destination_dir: 'ilivalidator'
 
-
-      # - name: 'Get Release URL'
-      #   # if: contains(github.ref, 'v')
-      #   uses: actions/download-artifact@v2-preview
-      #   with:
-      #     name: 'upload_url.txt'
-      # - name: 'Get Upload URL'
-      #   # if: contains(github.ref, 'v')
-      #   run: |
-      #     echo "UPLOAD_URL=$(cat upload_url.txt)" >> $GITHUB_ENV
-      # - name: 'Upload Release Asset'
-      #   # if: contains(github.ref, 'v')
-      #   id: upload-release-asset
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      #   with:
-      #     upload_url: ${{env.UPLOAD_URL}}
-      #     asset_path: output/${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
-      #     asset_name: ${{matrix.asset_prefix}}${{env.VERSION}}${{matrix.asset_suffix}}.${{matrix.package}}
-      #     asset_content_type: application/octet-stream
-  
   # build-windows-image:
   #   name: 'Build Windows Image'
   #   needs: [create-release]
