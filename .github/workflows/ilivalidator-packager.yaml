@@ -95,7 +95,7 @@ jobs:
       - name: 'Get Upload URL'
         # if: contains(github.ref, 'v')
         run: |
-          echo "::set-env name=UPLOAD_URL::$(cat upload_url.txt)"
+          echo "UPLOAD_URL=$(cat upload_url.txt)" >> $GITHUB_ENV
       - name: 'Upload Release Asset'
         # if: contains(github.ref, 'v')
         id: upload-release-asset
