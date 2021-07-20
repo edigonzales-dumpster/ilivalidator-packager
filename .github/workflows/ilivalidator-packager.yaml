@@ -19,7 +19,7 @@ jobs:
             icon: 'icon-ilivalidator-128x128.png'
             asset_prefix: 'ilivalidator_'
             asset_suffix: '-1_amd64'
-          - os: 'macos-latest'
+          - os: 'macos-10.15'
             label: 'mac'
             package: 'dmg'
             icon: 'icon-ilivalidator-128x128.icns'
