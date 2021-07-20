@@ -21,7 +21,7 @@ jobs:
             asset_suffix: '-1_amd64'
           - os: 'macos-10.15'
             label: 'mac'
-            package: 'dmg'
+            package: 'pkg'
             icon: 'icon-ilivalidator-128x128.icns'
             asset_prefix: 'ilivalidator-'
             asset_suffix: ''
